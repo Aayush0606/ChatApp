@@ -16,6 +16,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Button } from "react-native-elements";
 import firebase from "../config/firbase";
 import "firebase/auth";
+import { db } from "../config/firbase";
 
 function Signup({ navigation }) {
   const dispatch = useDispatch();
@@ -37,8 +38,19 @@ function Signup({ navigation }) {
   };
 
   const signUp = async () => {
+    const rooms = [
+      {
+        room1: "oyo",
+      },
+      {
+        room2: "OYO",
+      },
+    ];
     try {
-      await firebase.auth().createUserWithEmailAndPassword(email, pass);
+      const res = await firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, pass);
+      const docRef = await db.collection("userDetails").add({ name, rooms });
     } catch (error) {
       setError(error.message);
     }
