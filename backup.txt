@@ -1,0 +1,10 @@
+// FIREBASE
+
+// const firebaseConfig = {
+//   apiKey: "AIzaSyCMQVNC3DslEIwA_tNRfIVew9F5CqR5cVw",
+//   authDomain: "chatapp-e484b.firebaseapp.com",
+//   projectId: "chatapp-e484b",
+//   storageBucket: "chatapp-e484b.appspot.com",
+//   messagingSenderId: "197870103598",
+//   appId: "1:197870103598:web:4d03e2ad64b2deb4e003bf",
+// };
