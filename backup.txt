@@ -8,3 +8,44 @@
 //   messagingSenderId: "197870103598",
 //   appId: "1:197870103598:web:4d03e2ad64b2deb4e003bf",
 // };
+
+
+//APP NAVIGATION
+<NavigationContainer>
+        <Stack.Navigator
+          screenOptions={{
+            headerTintColor: "black",
+            headerTitleStyle: {
+              fontWeight: "bold",
+            },
+            headerTitleAlign: "center",
+            headerRight: () => (
+              <Button
+                onPress={async () => {
+                  await Firebase.auth().signOut();
+                  useDispatch(logout());
+                }}
+                type="clear"
+                icon={<Icon type="Entypo" name="home" raised />}
+              />
+            ),
+          }}
+        >
+          {value === true ? (
+            <Stack.Screen name="Chat" component={Chat} />
+          ) : (
+            <>
+              <Stack.Screen
+                name="Signup"
+                component={Signup}
+                options={{ title: "Signup For SuarChat" }}
+              />
+              <Stack.Screen
+                name="Login"
+                component={Login}
+                options={{ title: "Login For SuarChat" }}
+              />
+            </>
+          )}
+        </Stack.Navigator>
+      </NavigationContainer>

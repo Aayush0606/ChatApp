@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import Styles from "../styles/GlobalStyles";
 import { useSelector, useDispatch } from "react-redux";
-import { loggin, logout } from "../store/features/loggedReducer";
+import { loggin } from "../store/features/loggedReducer";
 import { Icon } from "react-native-elements";
 import { Input } from "react-native-elements";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -19,6 +19,7 @@ import "firebase/auth";
 import { db } from "../config/firbase";
 
 function Signup({ navigation }) {
+  const value = useSelector((state) => state.checkLogin.value);
   const dispatch = useDispatch();
 
   const [name, setName] = useState("");
@@ -27,6 +28,7 @@ function Signup({ navigation }) {
   const [error, setError] = useState("");
 
   const blankCheck = () => {
+    console.log(value);
     const chekName = name.replace(/\s/g, "");
     const chekEmail = email.replace(/\s/g, "");
     const chekPass = pass.replace(/\s/g, "");
@@ -38,19 +40,12 @@ function Signup({ navigation }) {
   };
 
   const signUp = async () => {
-    const rooms = [
-      {
-        room1: "oyo",
-      },
-      {
-        room2: "OYO",
-      },
-    ];
     try {
       const res = await firebase
         .auth()
         .createUserWithEmailAndPassword(email, pass);
-      const docRef = await db.collection("userDetails").add({ name, rooms });
+      const docRef = await db.collection("userDetails").add({ name });
+      dispatch(loggin());
     } catch (error) {
       setError(error.message);
     }

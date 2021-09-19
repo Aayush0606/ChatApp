@@ -27,7 +27,7 @@ function Login({ navigation }) {
   const signIn = async () => {
     try {
       await auth.signInWithEmailAndPassword(email, pass);
-      navigation.navigate("Signup");
+      dispatch(loggin());
     } catch (error) {
       setError(error.message);
     }
