@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../store/features/loggedReducer";
 import { NavigationContainer } from "@react-navigation/native";
@@ -25,6 +25,7 @@ export default function roomsRoute() {
 
   const value = useSelector((state) => state.checkLogin.value);
   const Stack = createNativeStackNavigator();
+
   return (
     <NavigationContainer>
       <Stack.Navigator
@@ -48,12 +49,12 @@ export default function roomsRoute() {
             <Stack.Screen
               name="Chat"
               component={Chat}
-              options={{ title: "Rooms" }}
+              options={{ title: `Welcome` }}
             />
             <Stack.Screen
               name="ChatBox"
               component={ChatBox}
-              options={{ title: "Room1" }}
+              // options={{ title: `Room` }}
             />
           </>
         ) : (

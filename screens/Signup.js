@@ -28,12 +28,13 @@ function Signup({ navigation }) {
   const [error, setError] = useState("");
 
   const blankCheck = () => {
-    console.log(value);
     const chekName = name.replace(/\s/g, "");
     const chekEmail = email.replace(/\s/g, "");
     const chekPass = pass.replace(/\s/g, "");
     if (chekName === "" || chekEmail === "" || chekPass === "") {
       setError("Please fill all the above fields");
+    } else if (name.length > 7) {
+      setError("Name should be less than 7 characters");
     } else {
       signUp();
     }
@@ -44,7 +45,10 @@ function Signup({ navigation }) {
       const res = await firebase
         .auth()
         .createUserWithEmailAndPassword(email, pass);
-      const docRef = await db.collection("userDetails").add({ name });
+      var cityRef = await db
+        .collection("userDetails")
+        .doc(res.user.uid)
+        .set({ name });
       dispatch(loggin());
     } catch (error) {
       setError(error.message);
