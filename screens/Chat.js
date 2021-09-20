@@ -19,6 +19,7 @@ import Firebase from "../config/firbase";
 import { db } from "../config/firbase";
 
 const Chat = ({ navigation }) => {
+  let user;
   const [rooms, setRooms] = useState([]);
   const [name, setName] = useState("");
   const [roomID, setRoomID] = useState("");
@@ -30,22 +31,48 @@ const Chat = ({ navigation }) => {
     } else if (roomID.length > 5) {
       setError("Room ID should be less tha 6 characters");
     } else {
-      const newRoom = {
-        name: roomID,
-      };
-      const res = await setRooms(rooms.concat(newRoom));
-      setRoomID("");
+      try {
+        const newRoom = {
+          name: roomID,
+        };
+        setRooms(rooms.concat(newRoom));
+        setRoomID("");
+        const roomCollection = db.collection("roomsData").doc(roomID).set({});
+        updateInDB();
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
+  const updateInDB = async () => {
+    user = await Firebase.auth().currentUser;
+    const details = await db
+      .collection("userDetails")
+      .doc(user.uid)
+      .set({ rooms }, { merge: true });
+  };
   const setUserName = async () => {
-    const user = await Firebase.auth().currentUser;
+    user = await Firebase.auth().currentUser;
     const details = await db.collection("userDetails").doc(user.uid).get();
     setName(details.data().name);
   };
+  const getRooms = async () => {
+    user = await Firebase.auth().currentUser;
+    const details = await db.collection("userDetails").doc(user.uid).get();
+    const userRooms = details.data().rooms.map((room) => room);
+    setRooms(userRooms);
+  };
 
   useEffect(() => {
+    if (rooms.length > 0) {
+      updateInDB();
+    }
+    if (rooms.length === 0) {
+      getRooms();
+      user = Firebase.auth().currentUser;
+    }
     setUserName();
-  }, []);
+  }, [name, rooms]);
   return (
     <ScrollView>
       <View style={Styles.AndroidSafeArea}>
@@ -89,15 +116,19 @@ const Chat = ({ navigation }) => {
         <Card>
           <Card.Title>Your Rooms</Card.Title>
           <Card.Divider />
-          {rooms.map((u, i) => {
+          {rooms.map((romms, i) => {
             return (
               <View key={i} style={{ marginVertical: 5 }}>
                 <Button
-                  title={u.name}
+                  title={romms.name}
                   raised
                   buttonStyle={{ justifyContent: "space-between" }}
                   onPress={() => {
-                    navigation.navigate("ChatBox", { name: u.name });
+                    navigation.navigate("ChatBox", {
+                      title: romms.name,
+                      userName: name,
+                      userID: user.uid,
+                    });
                   }}
                 />
               </View>

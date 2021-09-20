@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -7,7 +7,7 @@ import {
   Keyboard,
 } from "react-native";
 import Styles from "../styles/GlobalStyles";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { loggin, logout } from "../store/features/loggedReducer";
 import { Icon } from "react-native-elements";
 import { Input } from "react-native-elements";
@@ -16,7 +16,6 @@ import { Button } from "react-native-elements";
 import firebase from "../config/firbase";
 
 function Login({ navigation }) {
-  const value = useSelector((state) => state.checkLogin.value);
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
@@ -26,9 +25,10 @@ function Login({ navigation }) {
 
   const signIn = async () => {
     try {
-      await auth.signInWithEmailAndPassword(email, pass);
+      const res = await auth.signInWithEmailAndPassword(email, pass);
       dispatch(loggin());
     } catch (error) {
+      console.log(error.message);
       setError(error.message);
     }
   };
@@ -42,6 +42,17 @@ function Login({ navigation }) {
       signIn();
     }
   };
+  const getUser = async () => {
+    const user = await firebase.auth().currentUser;
+    if (user) {
+      dispatch(loggin());
+    } else {
+      dispatch(logout());
+    }
+  };
+  useEffect(() => {
+    getUser();
+  }, []);
 
   return (
     <TouchableWithoutFeedback
