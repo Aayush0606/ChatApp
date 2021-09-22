@@ -1,12 +1,12 @@
 {
   "expo": {
-    "name": "SuarChat",
-    "slug": "SuarChat",
-    "version": "1.0.0",
+    "name": "ChatApp",
+    "slug": "ChatApp",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/iconIOS.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/iconIOS.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -21,7 +21,7 @@
     "android": {
       "package": "com.myApp.chatApp",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/iconIOS.png",
         "backgroundColor": "#FFFFFF"
       }
     },

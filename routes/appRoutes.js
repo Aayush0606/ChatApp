@@ -51,23 +51,19 @@ export default function roomsRoute() {
               component={Chat}
               options={{ title: `Welcome` }}
             />
-            <Stack.Screen
-              name="ChatBox"
-              component={ChatBox}
-              // options={{ title: `Room` }}
-            />
+            <Stack.Screen name="ChatBox" component={ChatBox} />
           </>
         ) : (
           <>
             <Stack.Screen
               name="Signup"
               component={Signup}
-              options={{ title: "Signup For SuarChat", headerRight: null }}
+              options={{ title: "Signup For ChatApp", headerRight: null }}
             />
             <Stack.Screen
               name="Login"
               component={Login}
-              options={{ title: "Login For SuarChat", headerRight: null }}
+              options={{ title: "Login For ChatApp", headerRight: null }}
             />
           </>
         )}
